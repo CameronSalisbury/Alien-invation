@@ -5,6 +5,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 class AlienInvasion:
     """Overall Class to manage game assets and behavior"""
@@ -27,10 +28,18 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.alient = pygame.sprite.Group()
+
+        self.create_fleet()
 
         #setbackground color
         self.screen.fill(self.settings.bg_color)
 
+    def _create_fleet(self):
+        """create fleet of aliens"""
+        #make an alien
+        alien = Alien(self)
+        self.aliens.add(alien)
 
     
     def run_game(self):
@@ -38,10 +47,11 @@ class AlienInvasion:
         while True:
             self._check_events()
             self.ship.update()
-            self.bullets.update()
+            self._update_bullets()
             self._update_screen()
             #60 fps because we arnt running a nvidia series 1 billion :(
             self.clock.tick(60)
+
     
     def _check_events(self):
         """watch for keyboard and mouse events."""
@@ -75,17 +85,28 @@ class AlienInvasion:
         
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullet group"""
-        print("your in bullets")
-        new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
+        if len(self.bullets) < self.settings.bullets_allowed:
+            new_bullet = Bullet(self)
+            self.bullets.add(new_bullet)
+
+    def _update_bullets(self):
+        """update the position of the bullets"""
+        self.bullets.update()
+
+        #get rid of bullets
+        for bullet in self.bullets.copy():
+            if bullet.rect.bottom <= 0:
+                self.bullets.remove(bullet)
+        print(len(self.bullets))
+
 
     def _update_screen(self):
         """drawin'n stuff for background"""
         self.screen.fill(self.settings.bg_color)
         for bullet in self.bullets.sprites():
-            print("drawing bullet")
             bullet.draw_bullet()
         self.ship.blitme()
+        self.aliens.draw(self.screen)
         #make most recent drawn screen visibile
         pygame.display.flip()
 
