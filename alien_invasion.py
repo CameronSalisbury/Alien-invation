@@ -28,9 +28,9 @@ class AlienInvasion:
 
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
-        self.alient = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
 
-        self.create_fleet()
+        self._create_fleet()
 
         #setbackground color
         self.screen.fill(self.settings.bg_color)
