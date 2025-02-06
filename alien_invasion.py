@@ -37,9 +37,30 @@ class AlienInvasion:
 
     def _create_fleet(self):
         """create fleet of aliens"""
-        #make an alien
+        #Keep adding aliens until there is no room
+        #Spacing between aliens is one alien width and one alien height
         alien = Alien(self)
-        self.aliens.add(alien)
+        alien_width, alien_height = alien.rect.size
+
+        current_x, current_y = alien_width, alien_height
+        while current_y < (self.settings.screen_height - 3 * alien_height):
+            while current_x < (self.settings.screen_width - 2 * alien_width):
+                print(current_x)
+                self._create_alien(current_x, current_y)
+                current_x += 2 * alien_width        
+            print(current_y)
+            #finished row reset x value and increment y
+            current_x = alien_width
+            current_y += 2 * alien_height
+        
+    def _create_alien(self, x_position, y_position):
+        """Create an alien and place in in the row"""    
+        new_alien = Alien(self)
+        new_alien.x = x_position
+        new_alien.rect.x = x_position
+        new_alien.rect.y = y_position
+        self.aliens.add(new_alien)
+            
 
     
     def run_game(self):
@@ -97,7 +118,7 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.bottom <= 0:
                 self.bullets.remove(bullet)
-        print(len(self.bullets))
+        #print(len(self.bullets))
 
 
     def _update_screen(self):
