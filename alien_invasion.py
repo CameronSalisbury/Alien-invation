@@ -70,6 +70,7 @@ class AlienInvasion:
             self.ship.update()
             self._update_bullets()
             self._update_screen()
+            self._update_aliens()
             #60 fps because we arnt running a nvidia series 1 billion :(
             self.clock.tick(60)
 
@@ -113,6 +114,10 @@ class AlienInvasion:
     def _update_bullets(self):
         """update the position of the bullets"""
         self.bullets.update()
+
+    def _update_aliens(self):
+        """Update the positions of all aliens in the fleet."""
+        self.aliens.update()
 
         #get rid of bullets
         for bullet in self.bullets.copy():
