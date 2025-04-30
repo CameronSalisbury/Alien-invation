@@ -130,7 +130,7 @@ class AlienInvasion:
             self.ship.center_ship()
 
             #hide cursor
-            pygame.mouse.set_visable(False)
+            pygame.mouse.set_visible(False)
 
 
     def _check_keydown_events(self, event):
