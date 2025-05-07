@@ -126,6 +126,7 @@ class AlienInvasion:
             self.settings.initialize_dynamic_settings()
 
             self.stats.reset_stats()
+            self.sb.prep_score()
             self.game_active = True
 
             self.bullets.empty()
@@ -180,12 +181,19 @@ class AlienInvasion:
         """now we check for bullet collision"""
         collision = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
+        if collision:
+            for aliens in collision.values():
+                self.stats.score += self.settings.alien_points + len(aliens)
+            self.sb.prep_score()
+            self.sb.check_high_score()
+
         if not self.aliens:
             #destroy existing bullets and create new fleet.
             #aliens have been cleared out
             self.bullets.empty()
             self._create_fleet()
             self.settings.increase_speed()
+        
 
     def _update_aliens(self):
         """Update the positions of all aliens in the fleet."""
