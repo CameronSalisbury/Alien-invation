@@ -1,6 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
-class Ship:
+class Ship(Sprite):
     """A class to manage ship"""
 
     def __init__(self, ai_game):
@@ -8,17 +8,18 @@ class Ship:
         super().__init__()
         self.screen = ai_game.screen
         self.settings =  ai_game.settings
-        self.screen_rect = ai_game.screen.get_rect()
+        #self.screen_rect = ai_game.screen.get_rect()
 
         #Load the ship image and get rect
         self.image = pygame.image.load('images/ship.bmp')
         self.rect = self.image.get_rect()
+        self.screen_rect = self.screen.get_rect()
 
         #Start each new ship at the bottom center of screen
         self.rect.midbottom = self.screen_rect.midbottom
 
         #store a float for the ships exact horizontal position
-        self.x = float (self.rect.x)
+        self.x = float(self.rect.x)
 
         #movement flag ship should not be moving
         self.moving_right = False
